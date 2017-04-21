@@ -1,0 +1,107 @@
+{% extends 'user/dashboard.html' %}
+{% block inside %}
+<style type="text/css">
+	#user-image {
+		width: 150px;
+		height: 150px;
+		border-radius: 50%;
+		background-color: white;
+		margin: auto;
+	}
+
+	@media (min-width: 992px) {
+		#user-image {
+			float: right;
+		}
+	}
+
+</style>
+	<div class="col-md-12" >
+		<div class="row">
+			<div class="col-md-2">
+				<div id="user-image" {% if form.instance.avatar %} style="background-image: url('{{ form.instance.avatar.url }}')" {% endif %}></div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<form class="form-horizontal" method="post" enctype="multipart/form-data" style="padding-top: 40px;">
+				{% if messages %}
+				  {% for message in messages %}
+				    <div class="alert alert-success" role="alert">{{ message }}</div>
+				  {% endfor %}
+				{% endif %}
+
+				{% if form.non_field_errors %}
+					<div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+				{% endif %}
+
+				{% csrf_token %}
+
+				{% if form.errors.email %}
+					<div class="alert alert-danger" role="alert">{{ form.errors.email }}</div>
+				{% endif %}
+
+				<div class="form-group">
+			    <label for="email" class="col-md-4 control-label">Email</label>
+			    <div class="col-md-8">
+			      <input type="email" class="form-control" id="email" name="email" placeholder="Email" value = "{{ form.instance.email }}">
+			    </div>
+			  </div>
+
+			  {% if form.errors.name %}
+			  	<div class="alert alert-danger" role="alert">{{ form.errors.name }}</div>
+			  {% endif %}
+
+			  <div class="form-group">
+			    <label for="name" class="col-md-4 control-label">Display name</label>
+			    <div class="col-md-8">
+			      <input type="text" class="form-control" id="name" name="name" placeholder="Name" value= "{{ form.instance.name }}">
+			    </div>
+			  </div>
+
+			  {% if not form.instance.is_organization %}
+
+			  	{% if form.errors.first_name %}
+			  		<div class="alert alert-danger" role="alert">{{ form.errors.first_name }}</div>
+			  	{% endif %}
+
+				  <div class="form-group">
+				    <label for="first_name" class="col-md-4 control-label">First name</label>
+				    <div class="col-md-8">
+				      <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First name" value= "{{ form.instance.first_name }}">
+				    </div>
+				  </div>
+
+				  {% if form.errors.student_id %}
+				  	<div class="alert alert-danger" role="alert">{{ form.errors.student_id }}</div>
+				  {% endif %}
+
+			  	<div class="form-group">
+			  	  <label for="student_id" class="col-md-4 control-label">Student id</label>
+			  	  <div class="col-md-8 ">
+			  	    <input type="number" name="student_id" id="student_id" class="form-control" placeholder="Student id" value = "{{ form.instance.student_id }}">
+			  	  </div>
+			  	</div>
+			  {% endif %}
+
+			  {% if form.errors.avatar %}
+			  	<div class="alert alert-danger" role="alert">{{ form.errors.avatar }}</div>
+			  {% endif %}
+
+			  <div class="form-group">
+			    <label for="id_avatar" class="col-md-4 control-label">Profile image</label>
+			    <input type="file" id="id_avatar" name="avatar" style="padding-top: 8px; padding-left: 15px;">
+			  </div>
+				<div class="form-group">
+			    <div class="col-md-offset-4 col-md-8">
+			      <button type="submit" class="btn btn-primary">Update</button>
+			    </div>
+			  </div>
+			</form>
+		</div>
+		<div class="col-md-12">
+			<div class="col-md-offset-1" style="margin-top: 100px;">
+				<a class="btn btn-default" href="{% url 'password_change' %}" role="button">Change Password</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

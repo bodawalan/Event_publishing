@@ -1,0 +1,25 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+	<div class="col-md-6 col-md-offset-3" style="padding-top: 20px;">
+		{% for article in object_list %}
+			<div class="row">
+				<div class="thumbnail">
+					{% if article.thumbnail %}
+				  	<img src="/media/{{ article.thumbnail }}" alt="...">
+				  {% endif %}
+				  <div class="caption">
+				    <h3><a href="{% url 'article' article.slug %}">{{ article.title }}</a></h3>
+				    <p>{{ article.content | truncatechars:250 }}</p>
+				    <hr>
+				    <p style="color: gray;">
+				    	<small>{{ article.timestamp | timesince }} ago</small>
+				    	<small class="pull-right">{{ article.user }}</small>
+				    </p>
+				  </div>
+				</div>
+			</div>
+		{% endfor %}
+		{% include 'events/pagination.html' %}
+	</div>
+{% endblock content %}

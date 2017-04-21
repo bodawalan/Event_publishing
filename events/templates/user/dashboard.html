@@ -1,0 +1,64 @@
+{% extends 'events/base.html' %}
+{% load staticfiles %}
+
+{% block extra_head %}
+	<link href="{% static 'css/dashboard.css' %}" rel="stylesheet">  
+{% endblock %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+      <ul class="nav nav-sidebar">
+        <li class=""><a href="{% url 'event_create' %}"><i class="fa fa-file" aria-hidden="true"></i> Create Event</a></li>
+      </ul>
+      <ul class="nav nav-sidebar">
+        <li class=""><a href="{% url 'dashboard' %}"><i class="fa fa-calendar" aria-hidden="true"></i> My Events</a></li>
+        <li class=""><a href="{% url 'profile' %}"><i class="fa fa-user" aria-hidden="true"></i> Profile</a></li>
+      </ul>
+      {% if user.is_staff or user.is_superuser %}
+      <ul class="nav nav-sidebar">
+        <li><a href="{% url 'admin:index'%}"><i class="fa fa-cogs" aria-hidden="true"></i> Admin panel</a></li>
+      </ul>
+      {% endif %}
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <div class="row">
+      	{% block inside %}
+        <div class="col-md-9">
+          {% for event in object_list %}
+              <div class="row">
+                <div class="thumbnail">
+                  {% if event.thumbnail %}
+                    <img src="/media/{{ event.thumbnail }}" alt="...">
+                  {% endif %}
+                  <div class="caption">
+                    <p style="text-align: center;">
+                      {{ event.start_date }}
+                      {% if event.end_date %}
+                        - 
+                        {{ event.end_date }}
+                      {% endif %}
+                    </p>
+                    <hr>
+                    <h3>{{ event.title }}</h3>
+                    <p>{{ event.content }}</p>
+                    <hr>
+                    <p>      
+                      <a class="btn btn-info" href="{% url 'event' event.slug %}" role="button"><i class="fa fa-eye" aria-hidden="true"></i> View event</a>
+                      {% if user == event.created_by %}
+                      <a class="btn btn-default" href="{% url 'event_edit' event.slug %}" role="button"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                      <a class="btn btn-danger pull-right" href="{% url 'event_delete' event.slug %}" role="button"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</a>
+                      {% endif %}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+            {% include 'events/pagination.html' %}
+        </div>
+        {% endblock %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

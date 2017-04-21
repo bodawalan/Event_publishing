@@ -1,0 +1,30 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<div class="container-fluid" style="margin-top: 20px;">
+    <div class="col-sm-4 col-sm-offset-4">
+        {% if errors %}
+        	{% for error in errors %}
+        		<div class="alert alert-danger" role="alert">
+        			{{ error}}
+        		</div>
+        	{% endfor %}
+        {% endif %}
+        <form class="form" role="form" method="post" action="" id="login-nav">
+            {% csrf_token %}
+            <div class="form-group">
+                 <label class="sr-only" for="user_email">Email address</label>
+                 <input type="email" name="email" class="form-control input-lg" id="user_email" placeholder="Email address" required>
+            </div>
+            <div class="form-group">
+                 <label class="sr-only" for="user_password">Password</label>
+                 <input type="password" name="password" class="form-control input-lg" id="user_password" placeholder="Password" required>
+                 <div class="help-block text-right"><a href="{% url 'password_reset' %}">Forget the password ?</a></div>
+            </div>
+            <div class="form-group">
+                 <button type="submit" class="btn btn-primary btn-block input-lg">Sign in</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

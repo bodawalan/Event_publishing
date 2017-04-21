@@ -1,0 +1,66 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+	<div class="container" style="padding-top: 20px;">
+		<div class="row">
+			<div class="thumbnail">
+				{% if event.thumbnail %}
+			  	<img src="/media/{{ event.thumbnail }}" alt="...">
+			  {% endif %}
+			  <div class="caption">
+			  	<p style="text-align: center;">
+			  		{{ event.start_date }}
+			  		{% if event.end_date %}
+			  			- 
+			  			{{ event.end_date }}
+			  		{% endif %}
+			  	</p>
+			  	<hr>
+			    <h3>{{ event.title }}</h3>
+			    <p>{{ event.content }}</p>
+			    <hr>
+			    <p>
+			    	{% if user not in event.users.all %}
+			  		<form action="{% url 'join_event' event.slug %}" method="post" style="display: inline-block;">
+			  			{% csrf_token %}
+			    		<button class="btn btn-primary"  type="submit">Join</button>
+			    	</form>
+			    	{% else %}
+			    	<form action="{% url 'leave_event' event.slug %}" method="post" style="display: inline-block;">
+			  			{% csrf_token %}
+			    		<button class="btn btn-danger"  type="submit">Leave</button>
+			    	</form>
+			    	{% endif %}
+			      <a class="btn btn-info inviteuserbutton" data-toggle="modal" data-target="#inviteusermodel" role="button"><i class="fa fa-share-square-o" aria-hidden="true"></i> Invite</a>
+			      <small>{{ event.users.all.count }} joined.</small>
+			      <small class="pull-right">{{ event.created_by }}</small>
+			    </p>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="inviteusermodel" tabindex="-1" role="dialog">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title">Invite a friend</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>
+	        	<form class="form-inline col-md-offset-3" role="form" method="post" action="{% url 'invite_user_success' event.slug %}" id="inviteuserform">
+			      	{% csrf_token %}
+			      	<div class="input-group">
+				      	<input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+				      	<span class="input-group-btn">
+					        <button type="submit" class="btn btn-primary">Invite</button>
+					      </span>
+				      </div>
+			      </form>
+	        </p>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+</div>
+{% endblock content %}

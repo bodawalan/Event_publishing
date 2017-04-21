@@ -1,0 +1,81 @@
+{% extends 'events/base.html' %}
+{% load staticfiles %}
+
+{% block content%}
+
+<!-- Carousel
+================================================== -->
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <!--{% for slide in slides %}
+      {% if forloop.counter0 == 0 %}
+      <li data-target="#myCarousel" data-slide-to="{{ forloop.counter0 }}" class="active"></li>
+      {% else %}
+      <li data-target="#myCarousel" data-slide-to="{{ forloop.counter0 }}"></li>
+      {% endif %}
+    {% endfor %}-->
+      <img class="img-responsive" src="" alt="">
+  </ol>
+  <div class="carousel-inner" role="listbox">
+    {% for slide in slides %}
+    {% if slides.first == slide %}
+    <div class="item active" >
+    {% else %}
+    <div class="item">
+    {% endif %}
+      <img class="first-slide" src="/media/{{ slide.image }}" alt="First slide">
+      <div class="container">
+        <div class="carousel-caption">
+          <h1>{{ slide.headline }}</h1>
+          <p>{{ slide.text }}</p>
+          {% if slide.link and slide.link_title %}
+            <p><a class="btn btn-lg btn-primary" href="{{ slide.link }}" role="button">{{ slide.link_title }}</a></p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div><!-- /.carousel -->
+
+
+<!-- Page Content -->
+
+
+<div class="container-fluid">
+    <div class="col-lg-12" id="groups-title">
+        <h2>Our Groups</h2>
+    </div>
+    {% for group in groups %}
+    <div class="col-md-4 text-center">
+        <div class="thumbnail">
+            {% if group.thumbnail %}
+              <img class="img-responsive" src="/media/{{ group.thumbnail }}" alt="">
+            {% endif %}
+            <div class="caption">
+                <h3>{{ group.title }}</h3>
+                <p>{{ group.content | truncatechars:250 }}</p>
+                <ul class="list-inline">
+                    <li><a href="#"><i class="fa fa-2x fa-facebook-square"></i></a>
+                    </li>
+                    <li><a href="#"><i class="fa fa-2x fa-linkedin-square"></i></a>
+                    </li>
+                    <li><a href="#"><i class="fa fa-2x fa-twitter-square"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<div class="col-md-6 col-md-offset-3" style="padding-top: 20px;">
+	{% for event in object_list %}
+		<div class="row">
+			<a href="{% url 'event' event.slug %}" style="text-decoration: none;">
+			<div class="thumbnail">
+				{% if event.thumbnail %}
+			  	<img src="/media/{{ event.thumbnail }}" alt="...">
+			  {% endif %}
+			  <div class="caption">
+			  	<p style="text-align: center;">
+			  		{{ event.start_date }}
+			  		{% if event.end_date %}
+			  			- 
+			  			{{ event.end_date }}
+			  		{% endif %}
+			  	</p>
+			  	<hr>
+			    <h3>{{ event.title }}</h3>
+			    <p>{{ event.content | truncatechars:250 }}</p>
+			    <hr>
+			    <p>
+			      <small>{{ event.users.all.count }} joined.</small>
+			      <small class="pull-right">{{ event.created_by }}</small>
+			    </p>
+			  </div>
+			</div>
+			</a>
+		</div>
+	{% endfor %}
+	{% include 'events/pagination.html' %}
+</div>
+{% endblock content %}

@@ -1,0 +1,18 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+	<div class="container" style="padding-top: 20px;">
+		<div class="row">
+			<div class="thumbnail">
+				{% if article.thumbnail %}
+			  	<img src="/media/{{ article.thumbnail }}" alt="...">
+			  {% endif %}
+			  <div class="caption">
+			    <h3>{{ article.title }}</h3>
+			    <p>{{ article.content }}</p>
+			  </div>
+			</div>
+		</div>
+	</div>
+	
+{% endblock content %}
